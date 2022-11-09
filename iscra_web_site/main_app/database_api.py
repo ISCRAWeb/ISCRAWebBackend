@@ -19,15 +19,15 @@ def get_course_user_object(course, django_user):
     return models.CourseUser.filter(global_account=django_user).filter(course_set=[course])
 
 def is_registered(course, django_user):
-    """
-    
+    """!
+    Check if a user is registered on course.
     """
     course_students = course.students.all().filter(global_account=django_user)
     course_lecturers = course.lecturers.all().filter(global_account=django_user)
     return (course_students.exists() or course_lecturers.exists())
 
 def create_course_user(django_user, roles):
-    """
+    """!
     Function creates CourseUser object (with saving it to the database).
     """
     new_course_user = models.CourseUser(global_account=django_user)
@@ -36,7 +36,7 @@ def create_course_user(django_user, roles):
     return new_course_user
 
 def add_student(django_user, course, role):
-    """
+    """!
     Add student to the course.
     """
     if is_registered(course, django_user):
@@ -44,7 +44,7 @@ def add_student(django_user, course, role):
     new_student = create_course_user(django_user, role)
 
 def add_lecturer(django_user, course, role):
-    """
+    """!
     Add lecturer to the course.
     """
     if is_registered(course, django_user):
@@ -53,7 +53,7 @@ def add_lecturer(django_user, course, role):
 
 
 def update_user_roles(django_user, course, roles, reset=False):
-    """
+    """!
     Update user roles. If 'reset' is True then old roles are replaced with new.
     """
     course_user = get_course_user_object(course, django_user)
@@ -62,10 +62,34 @@ def update_user_roles(django_user, course, roles, reset=False):
     course_user.roles.add(roles)
     course_user.save()
 
-# ~ def create_course():
-    
+def create_course(  name,
+                    description,
+                    status,
+                    available,
+                    lecturers=None,
+                    students=None,
+                    program=None,
+                    materials=None):
+    """!
+    Add new Course. "Name", "description", "status" and "available"
+    are mandatory parameters.
+    """
+    new_course = models.Course(name=name,
+                    description=description,
+                    status=status,
+                    available=available
+                    )
+    if lecturers:
+        new_course.lecturers.add(lecturers)
+    if students:
+        new_course.students.add(students)
+    if program:
+        new_course.program.add(program)
+    if materials:
+        new_course.materials.add(materials)
+    new_course.save()
 
-# ~ def create_course_unit():
+def create_course_unit():
     
     
 # ~ def create_course_role(name):
