@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 # Fe-Ti is responsible for bugs in this code
 
+USER_GLOBAL_ROLE_LEN = 30
+
 # ~ COURSE_ROLE_NAME_LEN = 20
 # ~ COURSE_UNITTYPE_NAME_LEN = 20
 
@@ -10,6 +12,17 @@ from django.contrib.auth.models import User
 
 # ~ OCCASION_NAME_LEN = 100
 # ~ NEWS_ARTICLE_NAME_LEN = 100
+
+# User model extension
+
+class GlobalUserRole(models.Model):
+    name = CharField(USER_GLOBAL_ROLE_LEN)
+
+class AdditionalUserInfo(models.Model):
+    user = OneToOneField(User, on_delete=models.CASCADE)
+    roles = ManyToManyField(GlobalUserRole, blank=True)
+    description = TextField()
+
 
 # Course related models
 
