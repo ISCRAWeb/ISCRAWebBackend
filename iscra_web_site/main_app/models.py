@@ -23,7 +23,6 @@ class AdditionalUserInfo(models.Model):
     roles = ManyToManyField(GlobalUserRole, blank=True)
     description = TextField()
 
-
 # Course related models
 
 class CourseRole(models.Model):
@@ -68,6 +67,10 @@ class Course(models.Model):
     students = ManyToManyField(CourseUser, blank=True)
     program = ManyToManyField(CourseUnit, blank=True)
     materials = ManyToManyField(CourseMaterial, blank=True)
+    
+    date_of_adt =  models.DateTimeField(blank=True) ## date of announcement
+    date_of_start =  models.DateTimeField(blank=True)
+    date_of_end =  models.DateTimeField(blank=True)
 
 # Other models
 
@@ -81,6 +84,6 @@ class Occasion(models.Model):
 class NewsArticle(models.Model):
     # ~ name = CharField(max_length=NEWS_ARTICLE_NAME_LEN)
     name = TextField()
-    description = TextField()  
+    description = TextField()
     date =  models.DateTimeField(blank=True)
     available = BooleanField()
