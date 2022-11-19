@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import login, change_password,change_creds, current_user
+from .views import course, course_deal, course_for_auth
 
 router = routers.DefaultRouter()
 # router.register(r'heroes', views.HeroViewSet)
@@ -9,9 +9,7 @@ router = routers.DefaultRouter()
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path("login/", login),
-    path("change_pass/", change_password),
-    path("change_creds/", change_creds),
-    path("user_info/", current_user),
-    path('course/', include('course.urls'))
+    path("course_page/", course),
+    path("course_page/", course_for_auth),
+    path("course_page/deal", course_deal),
 ]
