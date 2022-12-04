@@ -1,6 +1,6 @@
 from rest_framework import serializers
-<<<<<<< HEAD
-from django.contrib.auth.models import User
+from models import Course
+
 
 class LoginSerializer(serializers.Serializer):
     login = serializers.CharField(max_length=50)
@@ -33,10 +33,6 @@ class ChangeCredsSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
-
-=======
-from .models import Course, User
-
 
 class CourseInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,4 +75,3 @@ class CourseInfoSerializer(serializers.ModelSerializer):
 #         Course.objects.delete(pk=course_id)
 #
 #         return
->>>>>>> de37dd7 (testing serializers and views)

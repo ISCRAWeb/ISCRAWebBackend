@@ -13,6 +13,5 @@ urlpatterns = [
     path("change_pass/", change_password),
     path("change_creds/", change_creds),
     path("user_info/", current_user),
-    path('course/', include('course.urls')),
-    path('courses/course/', show_course)
+    path('courses/<int:pk>/', show_course),
 ]

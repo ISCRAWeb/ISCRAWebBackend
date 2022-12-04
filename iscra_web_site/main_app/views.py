@@ -1,12 +1,12 @@
-<<<<<<< HEAD
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from .serializers import LoginSerializer, ChangePasswordSerializer, ChangeCredsSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import permission_classes, api_view
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from .models import CourseUser, AdditionalUserInfo
+from .serializers import *
 
 
 @api_view(["POST"])
@@ -71,14 +71,6 @@ def user_curses(request):
     return Response({
 
     })
-=======
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, viewsets
-from rest_framework.decorators import action, permission_classes, api_view
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from rest_framework.response import Response
-from .models import Course, CourseUser, AdditionalUserInfo
-from .serializers import *
 
 @api_view(['GET'])
 def show_course(request, course_id):
@@ -92,7 +84,7 @@ def show_course(request, course_id):
                'date_of_end': course.date_of_end}
 
     if request.user is not None:
-        role = CourseUser.objects.filter(global_account=request.user).roles.name # что-то не так с roles
+        role = CourseUser.objects.filter(global_account=request.user).roles.name    # что-то не так с roles
         global_role = AdditionalUserInfo.objects.filter(user=request.user)
 
         context += {'available': course.available,
@@ -137,4 +129,3 @@ def edit_course(request, course_id):
             return Response({'course': serializer.data})
 
     return Response({'error': 'Permission denied'})
->>>>>>> de37dd7 (testing serializers and views)
