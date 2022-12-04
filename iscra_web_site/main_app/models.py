@@ -16,7 +16,7 @@ USER_GLOBAL_ROLE_LEN = 30
 # User model extension
 
 class GlobalUserRole(models.Model):
-    name = models.CharField(USER_GLOBAL_ROLE_LEN)
+    name = models.CharField(max_length=USER_GLOBAL_ROLE_LEN)
 
 class AdditionalUserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class CourseUnit(models.Model):
     # ~ name = CharField(max_length=COURSE_UNIT_NAME_LEN) # Defines topic of a unit
     name = models.TextField()          # Defines topic of a unit
     description = models.TextField()   # Here goes unit description
-    unit_type = models.ForeignKey(CourseUnitType, on_delete=models.SET_NULL)
+    unit_type = models.ForeignKey(CourseUnitType, on_delete=models.SET_NULL, null=True)
 
 class CourseMaterial(models.Model):
     file_hash = models.TextField()
@@ -63,11 +63,11 @@ class Course(models.Model):
     description = models.TextField()
     status = models.SmallIntegerField()        # Announced|Active|Finished
     available = models.BooleanField()          # Defines availability of registration
-    lecturers = models.ManyToManyField(CourseUser, blank=True)
-    students = models.ManyToManyField(CourseUser, blank=True)
+    # lecturers = models.ManyToManyField(CourseUser, blank=True)
+    users = models.ManyToManyField(CourseUser, blank=True)
     program = models.ManyToManyField(CourseUnit, blank=True)
-    materials = models.ManyToManyField(CourseMaterial, blank=True)
-    
+    # materials = models.ManyToManyField(CourseMaterial, blank=True)
+
     date_of_adt = models.DateTimeField(blank=True) ## date of announcement
     date_of_start = models.DateTimeField(blank=True)
     date_of_end = models.DateTimeField(blank=True)
