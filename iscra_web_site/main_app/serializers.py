@@ -1,4 +1,5 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from django.contrib.auth.models import User
 
 class LoginSerializer(serializers.Serializer):
@@ -33,3 +34,49 @@ class ChangeCredsSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         pass
 
+=======
+from .models import Course, User
+
+
+class CourseInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['__all__']
+        read_only_fields = ['date_of_adt']
+    # def update(self, instance, validated_data):
+    #     pass
+
+
+
+
+# class CourseEditSerializer(serializers.Serializer):
+#     name = serializers.CharField()
+#     description = serializers.CharField()
+#     status = serializers.IntegerField()
+#     available = serializers.BooleanField(default=False)
+#     lecturers = serializers.ListField()
+#     students = serializers.ListField()
+#     program = serializers.ListField(child=serializers.CharField())
+#     materials = serializers.ListField(child=serializers.FileField())
+#
+#     date_of_start = serializers.DateTimeField()
+#     date_of_end = serializers.DateTimeField()
+#     def update(self, instance, validated_data):
+#         instance.name = validated_data.get('name', instance.name)
+#         instance.description = validated_data.get('description', instance.description)
+#         instance.status = validated_data.get('status', instance.status)
+#         instance.available = validated_data.get('available', instance.available)
+#         instance.lecturers = validated_data.get('lecturers', instance.lecturers)
+#         instance.students = validated_data.get('students', instance.students)
+#         instance.program = validated_data.get('program', instance.program)
+#         instance.materials = validated_data.get('materials', instance.materials)
+#         instance.date_of_start = validated_data.get('date_of_start', instance.date_of_start)
+#         instance.date_of_end = validated_data.get('date_of_end', instance.date_of_end)
+#         instance.save()
+#         return instance
+#
+#     def delete(self, course_id):
+#         Course.objects.delete(pk=course_id)
+#
+#         return
+>>>>>>> de37dd7 (testing serializers and views)
