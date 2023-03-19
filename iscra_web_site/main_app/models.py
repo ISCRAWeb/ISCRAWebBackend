@@ -45,8 +45,8 @@ class CourseUser(models.Model):
     """
     CourseUser should be unique for each pair of Course and User.
     The object stores:
-        roles           - a number of roles of the user
-        global_account  - a ForeignKey to django.contrib.auth.models.User
+        roles           - A number of roles of the user
+        global_account  - A ForeignKey to django.contrib.auth.models.User
     """
     roles = models.ManyToManyField(CourseRole)
     global_account = models.ForeignKey(
@@ -73,7 +73,7 @@ class CourseUnit(models.Model):
     """
     name = models.TextField()          # Defines topic of a unit
     description = models.TextField()   # Here goes unit description
-    number = models.SmallIntegerField(default=0) 
+    number = models.SmallIntegerField(default=0)
     unit_type = models.ForeignKey(
                                     CourseUnitType,
                                     on_delete=models.SET_NULL,
@@ -110,8 +110,7 @@ class Course(models.Model):
         description     - Course description
         status          - Small integer that corresponds to course status
         available       - Boolean for setting visibility
-        lecturers       - Lecturers list (or just "One Man to rule them all")
-        students        - Student list
+        users           - List of course users, i.e. lecturer and students
         program         - Course program
         materials       - Course materials
         date_of_adt     - Date of announcement
@@ -122,16 +121,10 @@ class Course(models.Model):
     description = models.TextField()
     status = models.SmallIntegerField()        # Announced|Active|Finished
     available = models.BooleanField()          # Defines availability of registration
-    
-    lecturers = models.ManyToManyField(
+
+    users = models.ManyToManyField(
                                         CourseUser,
-                                        blank=True,
-                                        related_name="lectured_courses"
-                                        )
-    students = models.ManyToManyField(
-                                        CourseUser,
-                                        blank=True,
-                                        related_name="studied_courses"
+                                        blank=True
                                         )
     program = models.ManyToManyField(
                                         CourseUnit,
