@@ -64,6 +64,7 @@ def current_user(request):
         'role': user.role
     })
 
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def user_curses(request):
@@ -72,60 +73,78 @@ def user_curses(request):
 
     })
 
-@api_view(['GET'])
-def show_course(request, course_id):
-    course = get_object_or_404(Course, pk=course_id)
-    context = {'name': course.name,
-               'description': course.description,
-               'status': course.status,
-               'lecturers': course.lecturers,
-               'date_of_adt': course.date_of_adt,
-               'date_of_start': course.date_of_start,
-               'date_of_end': course.date_of_end}
 
-    if request.user is not None:
-        role = CourseUser.objects.filter(global_account=request.user).roles.name    # что-то не так с roles
-        global_role = AdditionalUserInfo.objects.filter(user=request.user)
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def show_course(request, *args, **kwargs):
+    try:
+        course = Course.objects.get(pk=kwargs.get("pk", None))
+    except:
+        return Response({"Error: Object doesn't exist"})
 
-        context += {'available': course.available,
-                    'role': role}
-
-        if role is not None and global_role is not None:
-            context += {'program': course.program,
-                        'materials': course.materials}
-
-            if role == "lead" or global_role == "lecturer" or global_role == "admin":
-                context += {'students': course.students}
-
-    return Response({'course': context})
+    return Response({'name': course.name,
+                     'description': course.description,
+                     'status': course.status})
+    #                'lecturers': course.lecturers,
+    #                'date_of_adt': course.date_of_adt,
+    #                'date_of_start': course.date_of_start,
+    #                'date_of_end': course.date_of_end})
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def member_course(request, course_id):
-    pass
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def edit_course(request, course_id):
-    if request.user is not None:
-        course = get_object_or_404(Course, pk=course_id)
-        role = CourseUser.objects.filter(global_account=request.user).roles.name  # что-то не так с roles
-        global_role = AdditionalUserInfo.objects.filter(user=request.user)
-
-        if role == "lecturer":
-            serializer = CourseInfoSerializer(data=request.data['students'], instance=course)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-
-            return Response({'course': serializer.data})
-
-        if global_role == "admin":
-            serializer = CourseInfoSerializer(data=request.data, instance=course)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-
-            return Response({'course': serializer.data})
-
-    return Response({'error': 'Permission denied'})
+# @api_view(['GET'])
+# def show_course(request, course_id):
+#     course = get_object_or_404(Course, pk=course_id)
+#     context = {'name': course.name,
+#                'description': course.description,
+#                'status': course.status,
+#                'lecturers': course.lecturers,
+#                'date_of_adt': course.date_of_adt,
+#                'date_of_start': course.date_of_start,
+#                'date_of_end': course.date_of_end}
+#
+#     if request.user is not None:
+#         role = CourseUser.objects.filter(global_account=request.user).roles.name    # что-то не так с roles
+#         global_role = AdditionalUserInfo.objects.filter(user=request.user)
+#
+#         context += {'available': course.available,
+#                     'role': role}
+#
+#         if role is not None and global_role is not None:
+#             context += {'program': course.program,
+#                         'materials': course.materials}
+#
+#             if role == "lead" or global_role == "lecturer" or global_role == "admin":
+#                 context += {'students': course.students}
+#
+#     return Response({'course': context})
+#
+#
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def member_course(request, course_id):
+#     pass
+#
+#
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def edit_course(request, course_id):
+#     if request.user is not None:
+#         course = get_object_or_404(Course, pk=course_id)
+#         role = CourseUser.objects.filter(global_account=request.user).roles.name  # что-то не так с roles
+#         global_role = AdditionalUserInfo.objects.filter(user=request.user)
+#
+#         if role == "lecturer":
+#             serializer = CourseInfoSerializer(data=request.data['students'], instance=course)
+#             serializer.is_valid(raise_exception=True)
+#             serializer.save()
+#
+#             return Response({'course': serializer.data})
+#
+#         if global_role == "admin":
+#             serializer = CourseInfoSerializer(data=request.data, instance=course)
+#             serializer.is_valid(raise_exception=True)
+#             serializer.save()
+#
+#             return Response({'course': serializer.data})
+#
+#     return Response({'error': 'Permission denied'})
