@@ -14,4 +14,5 @@ urlpatterns = [
     path("change_creds/", change_creds),
     path("user_info/", current_user),
     path('courses/<int:pk>/', show_course),
+    path('auth/', include('djoser.urls')),
 ]
